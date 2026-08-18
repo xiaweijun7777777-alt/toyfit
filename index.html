@@ -689,7 +689,7 @@ function cardHTML(a){
       <span class="set-no">第${i+1}组</span>
       <div class="metric-line"><span class="set-cap">次数</span>
         <button class="stepper" data-act="rep-dec" data-aid="${a.id}" data-sid="${i}" aria-label="减少次数">−</button>
-        <span class="set-val font-num">${s.reps}</span>
+        <input class="set-val-input" type="number" inputmode="numeric" min="0" step="1" data-act="rep-input" data-aid="${a.id}" data-sid="${i}" value="${s.reps}" aria-label="次数">
         <button class="stepper" data-act="rep-inc" data-aid="${a.id}" data-sid="${i}" aria-label="增加次数">＋</button>
       </div>
       <div class="metric-line"><span class="set-cap">重量</span>
@@ -966,7 +966,7 @@ function toggleActionChip(name,part,type){
   } else {
     const idx=state.actions.findIndex(x=>x.name===name&&x.part===part);
     if(idx>=0){ state.actions.splice(idx,1); }
-    else { const lib=loadLib(), def=(lib[part]||[]).find(a=>a.name===name); state.actions.push({id:uid(),name,part,type:'无氧',restSec:(def&&def.restSec)||40,sets:[{reps:0,weight:0,done:false}]}); }
+    else { const lib=loadLib(), def=(lib[part]||[]).find(a=>a.name===name); state.actions.push({id:uid(),name,part,type:'无氧',restSec:(def&&def.restSec)||40,sets:[0,1,2,3].map(()=>({reps:6,weight:0,done:false}))}); }
   }
   renderActionGrid();
 }
@@ -1024,7 +1024,7 @@ document.addEventListener('click', e=>{
   if(act==='go-record'){ switchPage('record'); return; }
   if(act==='complete-set'){ completeSet(t.dataset.aid); return; }
   if(act==='del-action'){ state.actions=state.actions.filter(a=>a.id!==t.dataset.aid); renderRecord(); return; }
-  if(act==='add-set'){ const a=state.actions.find(x=>x.id===t.dataset.aid); if(a){ a.sets.push({reps:0,weight:0,done:false}); renderRecord(); } return; }
+  if(act==='add-set'){ const a=state.actions.find(x=>x.id===t.dataset.aid); if(a){ a.sets.push({reps:6,weight:0,done:false}); renderRecord(); } return; }
   if(act==='dur-inc'||act==='dur-dec'){ const a=state.actions.find(x=>x.id===t.dataset.aid); if(!a) return; const v=Number(a.durationMin)||0; a.durationMin=Math.max(0, act==='dur-inc'?v+1:v-1); renderRecord(); return; }
   if(act==='incline-inc'||act==='incline-dec'){ const a=state.actions.find(x=>x.id===t.dataset.aid); if(!a) return; const v=Number(a.incline)||0; a.incline=Math.max(0, act==='incline-inc'?+(v+0.5).toFixed(2):+(v-0.5).toFixed(2)); renderRecord(); return; }
   if(act==='rep-inc'||act==='rep-dec'||act==='wt-inc'||act==='wt-dec'){
@@ -1044,8 +1044,8 @@ document.addEventListener('click', e=>{
 /* 有氧时长由计时统一记录，不再单独记录 bpm / 卡路里 */
 
 /* 体重输入（实时存 state，失焦后重渲染显示「今日已记录」） */
-document.addEventListener('input', e=>{ if(e.target.id==='prew-input'){ const v=e.target.value; state.preWeight=(v==='')?null:parseFloat(v); } if(e.target.id==='sheet-search'){ sheetSearch=e.target.value; renderActionGrid(); } const d=e.target.dataset; if(d&&d.act==='wt-input'){ const a=state.actions.find(x=>x.id===d.aid); const set=a&&a.sets[Number(d.sid)]; if(set) set.weight=parseFloat(e.target.value)||0; } if(d&&d.act==='incline-input'){ const a=state.actions.find(x=>x.id===d.aid); if(a) a.incline=parseFloat(e.target.value)||0; } });
-document.addEventListener('change', e=>{ if(e.target.id==='prew-input'){ if(state.preWeight!=null) state.preWeight=Number(state.preWeight); renderRecord(); } const d=e.target.dataset; if(d&&(d.act==='wt-input'||d.act==='incline-input')){ renderRecord(); } });
+document.addEventListener('input', e=>{ if(e.target.id==='prew-input'){ const v=e.target.value; state.preWeight=(v==='')?null:parseFloat(v); } if(e.target.id==='sheet-search'){ sheetSearch=e.target.value; renderActionGrid(); } const d=e.target.dataset; if(d&&d.act==='wt-input'){ const a=state.actions.find(x=>x.id===d.aid); const set=a&&a.sets[Number(d.sid)]; if(set) set.weight=parseFloat(e.target.value)||0; } if(d&&d.act==='rep-input'){ const a=state.actions.find(x=>x.id===d.aid); const set=a&&a.sets[Number(d.sid)]; if(set) set.reps=Math.round(parseFloat(e.target.value))||0; } if(d&&d.act==='incline-input'){ const a=state.actions.find(x=>x.id===d.aid); if(a) a.incline=parseFloat(e.target.value)||0; } });
+document.addEventListener('change', e=>{ if(e.target.id==='prew-input'){ if(state.preWeight!=null) state.preWeight=Number(state.preWeight); renderRecord(); } const d=e.target.dataset; if(d&&(d.act==='wt-input'||d.act==='rep-input'||d.act==='incline-input')){ renderRecord(); } });
 
 /* 遮罩点击关闭 sheet */
 document.getElementById('sheet-mask').addEventListener('click', closeSheet);
