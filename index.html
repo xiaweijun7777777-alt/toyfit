@@ -77,6 +77,68 @@
   --segment-active-bg:var(--color-primary-soft);
 }
 
+/* ===== 赛博主题（cyber）：重写设计令牌 + 视觉增强 ===== */
+[data-theme="cyber"]{
+  --color-primary:#00E5FF;        --color-primary-hover:#33EDFF;
+  --color-primary-pressed:#00B8CC; --color-primary-soft:#062B33;
+  --color-heart:#FF2E97;          --color-heart-deep:#D11C78;
+  --color-achievement:#FFD23F;    --color-achievement-deep:#E0B400;
+  --color-success:#27E8A7;        --color-success-strong:#1BB38A;
+  --color-success-soft:#06302A;   --color-warning:#FF9F1C;
+  --color-bg:#070B16;             --color-surface:#111A2E;
+  --color-surface-warm:#0D1422;   --color-border:#1E2A44;
+  --color-border-soft:#0A0F1C;    --color-text-primary:#E8F1FF;
+  --color-text-secondary:#8FA3C7; --color-placeholder:#5A6B8C;
+  --grad-primary:linear-gradient(135deg,#00E5FF 0%,#B14BFF 100%);
+  --grad-achievement:linear-gradient(135deg,#FFD23F 0%,#FF2E97 100%);
+  --grad-hero:linear-gradient(160deg,#10204A 0%,#0A1024 55%,#160A2E 100%);
+  --font-rounded:"PingFang SC","Segoe UI",system-ui,sans-serif;
+  --font-num:"SF Mono","JetBrains Mono","Roboto Mono",Consolas,"Courier New",monospace;
+  --shadow-sm:0 2px 6px rgba(0,229,255,.18);
+  --shadow-md:0 6px 16px rgba(0,229,255,.22);
+  --shadow-lg:0 12px 30px rgba(0,229,255,.28);
+  --shadow-press:inset 0 2px 6px rgba(0,0,0,.55);
+  --shadow-focus:0 0 0 4px rgba(0,229,255,.30);
+  --shadow-top:0 6px 14px rgba(0,229,255,.14);
+  --shadow-bar-up:0 -6px 14px rgba(0,229,255,.18);
+  --part-chest-bg:#062B33;   --part-chest-fg:#00E5FF;
+  --part-back-bg:#062B33;    --part-back-fg:#00E5FF;
+  --part-leg-bg:#06302A;     --part-leg-fg:#27E8A7;
+  --part-shoulder-bg:#2E2A06;--part-shoulder-fg:#FFD23F;
+  --part-arm-bg:#2E0A1E;     --part-arm-fg:#FF2E97;
+  --part-core-bg:#1E0A2E;    --part-core-fg:#B14BFF;
+  --color-core:#B14BFF;          --color-core-soft:#1E0A2E;
+  --overlay-sheet:rgba(2,4,10,.62);
+  --color-chart-axis:#1E2A44;    --color-chart-grid:#141C2E;
+  --color-part-chest:#00E5FF;    --color-part-back:#00E5FF;
+  --color-part-legs:#27E8A7;     --color-part-shoulder:#FFD23F;
+  --color-part-arms:#FF2E97;     --color-part-core:#B14BFF;
+  --ring-track:#16213A;          --ring-progress:#00E5FF;
+  --ring-progress-done:#27E8A7;  --ring-warn:#FF9F1C;
+  --segment-active-bg:#062B33;
+}
+/* 赛博：网格 + 扫描线背景铺层 */
+[data-theme="cyber"] .phone{ position:relative; }
+[data-theme="cyber"] .phone::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    linear-gradient(rgba(0,229,255,.06) 1px, transparent 1px) 0 0/100% 30px,
+    linear-gradient(90deg, rgba(0,229,255,.06) 1px, transparent 1px) 0 0/30px 100%,
+    repeating-linear-gradient(0deg, rgba(0,0,0,0) 0 3px, rgba(0,0,0,.16) 3px 4px);
+  opacity:.5;
+}
+[data-theme="cyber"] .app{ position:relative; z-index:1; }
+/* 赛博：霓虹辉光 */
+[data-theme="cyber"] .app-name{ text-shadow:0 0 10px rgba(0,229,255,.65), 0 0 22px rgba(0,229,255,.35); }
+[data-theme="cyber"] .btn-primary{ box-shadow:0 0 0 1px rgba(0,229,255,.5), 0 6px 18px rgba(0,229,255,.30); }
+[data-theme="cyber"] .timer{ text-shadow:0 0 12px rgba(0,229,255,.5); }
+[data-theme="cyber"] .action-card{ border:1px solid rgba(0,229,255,.18); }
+
+/* 主题切换器（两种主题通用，令牌自适应） */
+.theme-seg{display:flex;gap:var(--space-xs);background:var(--color-border-soft);padding:6px;border-radius:var(--radius-pill);}
+.theme-opt{flex:1;border:none;cursor:pointer;font-family:var(--font-rounded);font-size:15px;font-weight:700;color:var(--color-text-secondary);background:transparent;padding:12px 8px;border-radius:var(--radius-pill);transition:.18s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.theme-opt.sel{background:var(--segment-active-bg);color:var(--color-primary);box-shadow:var(--shadow-sm);}
+
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;height:100%;}
 body{
@@ -352,6 +414,9 @@ body{
 .hist-date{font-size:16px;font-weight:700;color:var(--color-text-primary);}
 .hist-meta{font-size:13px;color:var(--color-text-secondary);margin-left:auto;}
 .hist-chev{font-size:14px;color:var(--color-placeholder);transition:transform .25s;}
+.hist-del{flex-shrink:0;margin-left:var(--space-sm);background:transparent;border:none;font-size:17px;line-height:1;cursor:pointer;padding:6px;border-radius:var(--radius-pill);opacity:.65;transition:opacity .2s,transform .1s,background .2s;}
+.hist-del:hover{opacity:1;background:rgba(229,72,77,.12);}
+.hist-del:active{opacity:1;transform:scale(.88);}
 .hist-item.open .hist-chev{transform:rotate(180deg);}
 .hist-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease;}
 .hist-body>*{overflow:hidden;}
@@ -573,6 +638,19 @@ function initLib(){ try{ const o={}; PARTS.forEach(p=>o[p]=(DEFAULT_LIB[p]||[]).
 function saveLib(o){ try{localStorage.setItem(LS_LIB,JSON.stringify(o));}catch(e){} }
 function loadPlan(){ try{const r=localStorage.getItem(LS_PLAN);if(r){const o=JSON.parse(r);if(o&&typeof o==='object')return o;}}catch(e){} const d={胸:true,背:true,臂:true}; try{localStorage.setItem(LS_PLAN,JSON.stringify(d));}catch(e){} return d; }
 function savePlan(o){ try{localStorage.setItem(LS_PLAN,JSON.stringify(o));}catch(e){} }
+/* 进行中草稿：切后台/关页时自动落盘，重开恢复，避免输入丢失 */
+const LS_DRAFT='toyfit_draft', LS_THEME='toyfit_theme';
+function applyTheme(t){
+  const root=document.documentElement;
+  if(t==='cyber') root.setAttribute('data-theme','cyber'); else root.removeAttribute('data-theme');
+  try{ localStorage.setItem(LS_THEME, t); }catch(e){}
+  const meta=document.querySelector('meta[name=theme-color]');
+  if(meta) meta.setAttribute('content', t==='cyber' ? '#070B16' : '#3E6CA8');
+}
+let appReady=false;
+function saveDraft(){ try{ localStorage.setItem(LS_DRAFT, JSON.stringify({training:state.training,startTs:state.startTs,elapsed:state.elapsed,preWeight:state.preWeight,actions:state.actions})); }catch(e){} }
+function loadDraft(){ try{ const r=localStorage.getItem(LS_DRAFT); if(r){ const d=JSON.parse(r); if(d&&typeof d==='object') return d; } }catch(e){} return null; }
+function clearDraft(){ try{ localStorage.removeItem(LS_DRAFT); }catch(e){} }
 function todayStr(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; }
 
 /* ============ 状态 ============ */
@@ -623,6 +701,7 @@ function renderRecord(){
   `;
   const cta=document.getElementById('cta-bar');
   cta.innerHTML=`<button class="btn-primary" id="cta-btn" data-act="cta">${state.training?'结束并保存':'开始训练'}</button>`;
+  if(appReady) saveDraft();
 }
 function preWeightHTML(){
   const v=state.preWeight, recorded=(v!=null&&v!=='');
@@ -745,7 +824,7 @@ function historyHTML(f){ const sorted=[...f].sort((a,b)=>b.date.localeCompare(a.
     const body=acts.map(a=> a.type==='有氧'
       ? `<div class="hist-action"><span class="an">${escapeHtml(a.name)}</span><span class="chip" style="background:var(--color-success-soft);color:var(--color-success-strong)">有氧</span></div><div class="hist-sets"><div class="hist-set">时长 ${a.durationMin} 分${a.incline?(' · 坡度 '+a.incline+'%'):''}</div></div>`
       : `<div class="hist-action"><span class="an">${escapeHtml(a.name)}</span><span class="chip chip-part" data-part="${a.part}">${a.part}</span></div><div class="hist-sets">${(a.sets||[]).map((set,i)=>`<div class="hist-set">第${i+1}组 · ${set.reps} 次 × ${set.weight} kg</div>`).join('')}</div>`).join('');
-    return `<div class="hist-item" data-act="acc"><div class="hist-head"><span class="hist-date">${s.date}</span><span class="hist-meta">${acts.length} 动作 · ${totalSets} 组${aerobicMin>0?` · 有氧 ${aerobicMin}分`:''}</span><span class="hist-chev">▾</span></div><div class="hist-body"><div class="hist-inner">${body}</div></div></div>`;
+    return `<div class="hist-item" data-act="acc"><div class="hist-head"><span class="hist-date">${s.date}</span><span class="hist-meta">${acts.length} 动作 · ${totalSets} 组${aerobicMin>0?` · 有氧 ${aerobicMin}分`:''}</span><button class="hist-del" type="button" data-act="del-hist" data-sid="${s.id}" aria-label="删除这条记录">🗑</button><span class="hist-chev">▾</span></div><div class="hist-body"><div class="hist-inner">${body}</div></div></div>`;
   }).join('');
 }
 function distinctDays(f){ return new Set(f.map(x=>x.date)).size; }
@@ -853,12 +932,14 @@ function weightLine(points){
 /* ============ 渲染：我的页（v2 D） ============ */
 function renderMine(){
   const el=document.getElementById('mine-body'), wAll=allWeightPoints(), plan=loadPlan();
+  const curTheme=document.documentElement.getAttribute('data-theme')||'playmate';
   el.innerHTML=`<header class="hero"><div class="hero-top"><span class="app-name">ToyFit</span><span class="app-sub">我的</span></div><p class="hero-encourage">坚持记录，看见自己的变化 💪</p></header>
     <div class="mine-section"><div class="mine-h">长期体重趋势</div>${wAll.length>=2?weightLine(wAll):emptyChart('先记录几次体重，就能看到变化啦')}</div>
     <div class="mine-section"><div class="mine-h">周训练计划</div><p class="about-text" style="margin-bottom:var(--space-md)">你每周必练胸/背/臂，其他看情况。完成度会显示在记录页顶部。</p>${['胸','背','臂'].map(p=>`<div class="toggle-row"><div><div class="tr-label">${p} 必练</div><div class="tr-note">${p}部训练计入周计划</div></div><button class="toggle" data-plan="${p}" role="switch" aria-checked="${plan[p]?'true':'false'}"><span class="toggle-knob"></span></button></div>`).join('')}</div>
     <div class="mine-section"><div class="mine-h">动作库管理</div>${libManageHTML()}<div class="lib-add"><input id="lib-add-name" type="text" placeholder="自定义动作名" maxlength="20" autocomplete="off"><span class="part-pick-inline">${PARTS.map(p=>`<span class="chip ${state.addLibPart===p?'sel':''}" data-act="lib-part" data-part="${p}">${p}</span>`).join('')}</span><button class="preset-chip" data-act="lib-add">添加</button></div></div>
+    <div class="mine-section"><div class="mine-h">外观主题</div><p class="about-text" style="margin-bottom:var(--space-md)">切换整体视觉风格，深色霓虹「赛博」已上线。</p><div class="theme-seg"><button class="theme-opt ${curTheme==='playmate'||!curTheme?'sel':''}" data-act="theme" data-theme-value="playmate">🟦 玩伴</button><button class="theme-opt ${curTheme==='cyber'?'sel':''}" data-act="theme" data-theme-value="cyber">⚡ 赛博</button></div></div>
     <div class="mine-section"><div class="mine-h">数据导出</div><p class="about-text" style="margin-bottom:var(--space-md)">导出全部训练记录、动作库与周计划为 JSON 文件，仅存本地，不上传。</p><button class="btn-primary" data-act="export">导出我的数据</button></div>
-    <div class="mine-section"><div class="mine-h">关于 ToyFit</div><p class="about-text">ToyFit · 训练伙伴 v2.0 — 一个会陪你举铁的玩具伙伴。<br>设计系统：ToyFit 玩伴系统（设计系统专家 彩格调）。<br>隐私优先：所有数据仅保存在本机 localStorage，无任何上传、账号或网络请求。仅参考玩具电影风格气质，不使用任何真实 IP 形象。</p></div>`;
+    <div class="mine-section"><div class="mine-h">关于 ToyFit</div><p class="about-text">ToyFit · 训练伙伴 v2.3 — 一个会陪你举铁的玩具伙伴。<br>设计系统：ToyFit 玩伴系统（设计系统专家 彩格调）。<br>隐私优先：所有数据仅保存在本机 localStorage，无任何上传、账号或网络请求。仅参考玩具电影风格气质，不使用任何真实 IP 形象。</p></div>`;
 }
 function libManageHTML(){ const lib=loadLib();
   return PARTS.map(p=>{ const items=(lib[p]||[]).map((a,i)=>`<span class="lib-chip" data-part="${p}" data-idx="${i}">${escapeHtml(a.name)}<button class="lib-del" data-act="lib-del" data-part="${p}" data-idx="${i}" aria-label="删除">✕</button></span>`).join('');
@@ -962,11 +1043,11 @@ function toggleActionChip(name,part,type){
   if(type==='有氧'){
     const idx=state.actions.findIndex(x=>x.type==='有氧'&&x.name===name);
     if(idx>=0){ state.actions.splice(idx,1); }
-    else { state.actions.push({id:uid(),name,type:'有氧',part:'有氧',durationMin:0,incline:0}); }
+    else { state.actions.push({id:uid(),name,type:'有氧',part:'有氧',durationMin:30,incline:12}); }
   } else {
     const idx=state.actions.findIndex(x=>x.name===name&&x.part===part);
     if(idx>=0){ state.actions.splice(idx,1); }
-    else { const lib=loadLib(), def=(lib[part]||[]).find(a=>a.name===name); state.actions.push({id:uid(),name,part,type:'无氧',restSec:(def&&def.restSec)||40,sets:[0,1,2,3].map(()=>({reps:6,weight:0,done:false}))}); }
+    else { const lib=loadLib(), def=(lib[part]||[]).find(a=>a.name===name); state.actions.push({id:uid(),name,part,type:'无氧',restSec:(def&&def.restSec)||40,sets:[0,1,2,3,4].map(()=>({reps:6,weight:0,done:false}))}); }
   }
   renderActionGrid();
 }
@@ -976,7 +1057,7 @@ function tick(){ state.elapsed=Math.floor((Date.now()-state.startTs)/1000); cons
 function startTraining(){ state.training=true; state.startTs=Date.now(); state.elapsed=0; state.timerId=setInterval(tick,1000); tick(); renderRecord(); }
 function finishAndSave(){
   clearInterval(state.timerId);
-  const session={ date:todayStr(), durationSec:state.elapsed,
+  const session={ id:uid(), date:todayStr(), durationSec:state.elapsed,
     preWeight: state.preWeight!=null?Number(state.preWeight):null,
     actions: state.actions.map(a=>{
       if(a.type==='有氧') return {name:a.name,type:'有氧',durationMin:Number(a.durationMin)||0,incline:Number(a.incline)||0};
@@ -984,6 +1065,7 @@ function finishAndSave(){
     }).filter(a=> a.type==='有氧' ? (a.durationMin>0) : (a.sets.length>0)) };
   const all=loadSessions(); all.push(session); saveSessions(all);
   state.training=false; state.elapsed=0; state.actions=[]; state.preWeight=session.preWeight;
+  clearDraft();
   renderRecord(); showToast('训练已保存 🎉 你又变强啦！');
 }
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(showToast._t); showToast._t=setTimeout(()=>t.classList.remove('show'),2600); }
@@ -1008,6 +1090,7 @@ document.addEventListener('click', e=>{
   if(t.dataset.page){ switchPage(t.dataset.page); return; }
   if(t.dataset.seg){ state.seg=t.dataset.seg; renderAnalysis(); return; }
   if(t.dataset.plan){ const p=t.dataset.plan, plan=loadPlan(); plan[p]=!plan[p]; savePlan(plan); renderMine(); return; }
+  if(t.dataset.act==='theme'){ applyTheme(t.dataset.themeValue); renderMine(); return; }
   if(t.dataset.partTab){ sheetPart=t.dataset.partTab; renderPartTabs(); renderActionGrid(); return; }
   if(t.dataset.sheetMode){ state.sheetMode=t.dataset.sheetMode; renderSheetMode(); renderPartTabs(); renderActionGrid(); return; }
   if(t.dataset.actionChip){ toggleActionChip(t.dataset.actionChip, t.dataset.part, t.dataset.type); return; }
@@ -1034,6 +1117,7 @@ document.addEventListener('click', e=>{
     renderRecord(); return;
   }
   if(act==='filter'){ state.filter=t.dataset.part; renderHistory(); return; }
+  if(act==='del-hist'){ delSession(t.dataset.sid); return; }
   if(act==='acc'){ t.classList.toggle('open'); return; }
   if(act==='lib-part'){ state.addLibPart=t.dataset.part; renderMine(); return; }
   if(act==='lib-add'){ const inp=document.getElementById('lib-add-name'); const name=inp?inp.value.trim():''; if(name){ addLibAction(name,state.addLibPart); renderMine(); showToast('已加入动作库 ✅'); } return; }
@@ -1053,6 +1137,14 @@ document.getElementById('sheet-mask').addEventListener('click', closeSheet);
 /* 动作库增删 */
 function addLibAction(name,part){ const lib=loadLib(); if(!(lib[part]||[]).some(a=>a.name===name)){ lib[part]=lib[part]||[]; lib[part].push({name,restSec:40}); saveLib(lib); } }
 function delLibAction(part,idx){ const lib=loadLib(); if(lib[part]&&lib[part][idx]){ lib[part].splice(idx,1); saveLib(lib); } }
+/* 历史记录按 id 精确删除（二次确认防误删） */
+function delSession(id){
+  if(!id) return;
+  if(!confirm('确定删除这条训练记录吗？删除后无法恢复。')) return;
+  const all=loadSessions(); const i=all.findIndex(s=>String(s.id)===String(id));
+  if(i<0) return;
+  all.splice(i,1); saveSessions(all); renderHistory(); showToast('已删除这条记录 🗑');
+}
 
 /* 数据导出 */
 function exportData(){
@@ -1065,11 +1157,32 @@ function exportData(){
 
 /* ============ 启动 ============ */
 (function init(){
+  applyTheme(localStorage.getItem(LS_THEME)==='cyber' ? 'cyber' : 'playmate');
+  // 存量历史记录补 id（首次迁移，便于按 id 精确删除；只迁移一次即落盘）
+  const _all=loadSessions(); let _mig=false; _all.forEach(s=>{ if(!s.id){ s.id=uid(); _mig=true; } }); if(_mig) saveSessions(_all);
   loadLib(); loadPlan();
   const todaySess=loadSessions().filter(s=>s.date===todayStr());
   if(todaySess.length){ const last=todaySess[todaySess.length-1]; if(last.preWeight!=null&&last.preWeight!=='') state.preWeight=last.preWeight; }
+  // 恢复上次未完成的训练草稿（切 App/关页后回来不丢）
+  const draft=loadDraft();
+  const hasDraft=draft && ((draft.actions&&draft.actions.length)||draft.training);
+  if(hasDraft){
+    state.training=!!draft.training;
+    state.elapsed=Number(draft.elapsed)||0;
+    state.startTs=state.training ? (Date.now()-(state.elapsed||0)*1000) : (draft.startTs||Date.now());
+    state.preWeight=draft.preWeight!=null?draft.preWeight:state.preWeight;
+    state.actions=Array.isArray(draft.actions)?draft.actions:[];
+    if(state.training){ state.timerId=setInterval(tick,1000); tick(); }
+  }
+  appReady=true;
   renderRecord();
+  if(hasDraft) showToast('已恢复上次未完成的训练 💪');
 })();
+/* 切后台/关页时兜底落盘（移动端后台会卸载页面，内存数据丢失，靠这里兜底） */
+function flushDraft(){ if(state.training||state.actions.length) saveDraft(); }
+window.addEventListener('pagehide', flushDraft);
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') flushDraft(); });
+window.addEventListener('beforeunload', flushDraft);
 </script>
 </body>
 </html>
